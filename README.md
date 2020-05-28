@@ -7,7 +7,7 @@
 
 ## command: 
 `node index.js --action="get" --id=7`
-![second img](/images/showContactWithID)
+![second img](/images/showContactWithID.png)
 
 ## command:
 `node index.js --action="add" --name="Mango" --email="mango@gmail.com" --phone="322-22-22"`
