@@ -1,28 +1,27 @@
-const contacts = require("./contacts")
-const argv = require('yargs').argv;
+const express = require("express");
+const morgan = require("morgan");
+const cors = require("cors");
+const Joi = require("joi");
+const contacts = require("../contacts");
 
-// TODO: рефакторить
-function invokeAction({ action, id, name, email, phone }) {
-  switch (action) {
-    case 'list':
-        contacts.listContacts()
-      break;
+const server = express();
+server.use(cors());
+server.use(express.json());
+server.use(express.static("public"));
+server.use(morgan("dev"));
 
-    case 'get':
-      contacts.getContactById(id)
-      break;
+server.get("/api", (req, res) => {
+  res.send({ method: "GET" });
+});
 
-    case 'add':
-      contacts.addContact(name, email, phone)
-      break;
+server.get("/", function (req, res) {
+  res.send("Hello World");
+});
+server.get("/api/contacts", (req, res) => {
+  contacts.listContacts(req, res);
+});
+server.get("/api/contacts/:contactId", (req, res) => {
+  contacts.getContactById({ req, res, contactId: req.params.contactId });
+});
 
-    case 'remove':
-      contacts.removeContact(id)
-      break;
 
-    default:
-      console.warn('\x1B[31m Unknown action type!');
-  }
-}
-
-invokeAction(argv);
